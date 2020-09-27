@@ -1,60 +1,65 @@
-var bullet,wall,thickness
-var speed,weight
-function setup(){
-createCanvas(1600,400)
-speed=random(223,321)
-weight=random(30,52)
-thickness=random(22,83)
-car=createSprite(50,200,50,50)
-car.velocityX = speed
-wall=createSprite(1200,200,thickness,height/2)
-}
-function draw (){
-background("black")
-if(hasCollided(bullet,wall))
+var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
+var packageBody,ground
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Body = Matter.Body;
+
+function preload()
 {
-bullet.velocityX=0
-var damage=0.5*weight*speed*speed/(thickness*thickness*thickness)
-
-if(damage>10)
-{
-    wall.shapeColor=color(255,0,0)
-}
-if(damage<10)
-{
-    wall.shapeColor=color(0,255,0)
+	helicopterIMG=loadImage("helicopter.png")
+	packageIMG=loadImage("package.png")
 }
 
+function setup() {
+	createCanvas(800, 700);
+	rectMode(CENTER);
+	
+
+	packageSprite=createSprite(width/2, 80, 10,10);
+	packageSprite.addImage(packageIMG)
+	packageSprite.scale=0.2
+
+	helicopterSprite=createSprite(width/2, 200, 10,10);
+	helicopterSprite.addImage(helicopterIMG)
+	helicopterSprite.scale=0.6
+
+	groundSprite=createSprite(width/2, height-35, width,10);
+	groundSprite.shapeColor=color(255)
 
 
+	engine = Engine.create();
+	world = engine.world;
+
+	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:3, isStatic:false});
+	World.add(world, packageBody);
+	
+
+	//Create a Ground
+	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
+ 	World.add(world, ground);
 
 
-
-
-
-
+	Engine.run(engine);
+  
 }
-drawSprites()
-}
-function hasCollided(lbullet,lwall)
-{
-bulletRightEdge=lbullet.x+lbullet.width;
-wallLeftEdge=lwall.x
-if(bulletRightEdge>=wallLeftEdge)
-{
-return true
 
-}
-return false;
+
+function draw() {
+  rectMode(CENTER);
+  background(0);
+  packageSprite.x= packageBody.position.x 
+  packageSprite.y= packageBody.position.y 
+  drawSprites();
+ 
 }
 
-
-
-
-
-
-
-
+function keyPressed() {
+ if (keyCode === DOWN_ARROW) {
+    // Look at the hints in the document and understand how to make the package body fall only on
+	
+  }
+}
 
 
 
